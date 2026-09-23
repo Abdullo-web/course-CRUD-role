@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if error %}
+        {{ error }}
+    {% endif %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <label for="Username">Username</label><br>
+        <input type="text" name="username" placeholder="Enter your username"><br>
+        <label for="Password">Password</label><br>
+        <input type="Password" name="password" placeholder="Enter your password"><br>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

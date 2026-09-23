@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Course</h1> <br>
+    {% for course in courses %} <br>
+    Course title: {{ course.title }} <br>
+    Course description: {{ course.description }} <br>
+    Course price: {{ course.price }} <br>
+    Course cr_at: {{ course.cr_at |date:"d.m.Y H:i" }} <br>
+    {% if request.user.role == 'admin' or request.user.role == 'manager' %} <br>
+    <a href="{% url 'update_course' course.id %}">
+        <button type="button">Update Course</button>
+    </a> <br>
+    {% endif %}  <br>
+    {% if request.user.role == 'admin' %} <br>
+    <form action="{% url 'delete_course' course.id %}" method="post"> <br>
+        {% csrf_token %}
+        <button type="submit" onclick="return confirm('Realno udalit ?');">Delete Course</button> <br>
+    </form> <br>
+{% endif %}
+    {% endfor %} <br>
+    {% if request.user.role == 'admin' or request.user.role == 'manager' %} <br>
+    <a href="{% url 'create_course' %}"> 
+        <button type="button">Add Courses</button>
+    </a><br>
+    {% endif %}
+</body>
+</html>
