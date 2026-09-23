@@ -3,6 +3,163 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:linear-gradient(135deg,#141E30,#243B55);
+            min-height:100vh;
+            padding:40px;
+            color:white;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:35px;
+            font-size:38px;
+            text-shadow:0 0 15px #00d4ff;
+        }
+
+        .container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .course-card{
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(12px);
+            border:1px solid rgba(255,255,255,0.15);
+            border-radius:20px;
+            padding:25px;
+            margin-bottom:25px;
+            box-shadow:0 15px 30px rgba(0,0,0,.35);
+            transition:.3s;
+        }
+
+        .course-card:hover{
+            transform:translateY(-6px) scale(1.02);
+            box-shadow:0 20px 40px rgba(0,212,255,.25);
+        }
+
+        .course-card h2{
+            color:#00d4ff;
+            margin-bottom:15px;
+        }
+
+        .info{
+            margin:8px 0;
+            color:#ddd;
+        }
+
+        .buttons{
+            display:flex;
+            gap:12px;
+            margin-top:20px;
+            flex-wrap:wrap;
+        }
+
+        button{
+            border:none;
+            padding:12px 18px;
+            border-radius:12px;
+            cursor:pointer;
+            font-size:15px;
+            font-weight:bold;
+            color:white;
+            transition:.3s;
+        }
+
+        .update-btn{
+            background:linear-gradient(90deg,#00c6ff,#0072ff);
+            box-shadow:0 8px 18px rgba(0,198,255,.35);
+        }
+
+        .delete-btn{
+            background:linear-gradient(90deg,#ff416c,#ff4b2b);
+            box-shadow:0 8px 18px rgba(255,75,43,.35);
+        }
+
+        .add-btn{
+            background:linear-gradient(90deg,#00d4aa,#00c853);
+            padding:14px 24px;
+            margin-top:20px;
+            box-shadow:0 10px 20px rgba(0,200,83,.35);
+        }
+
+        button:hover{
+            transform:translateY(-3px);
+            opacity:.95;
+        }
+
+        .add-course{
+            text-align:center;
+            margin-top:30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>📚 Courses</h1>
+
+    {% for course in courses %}
+    <div class="course-card">
+
+        <h2>{{ course.title }}</h2>
+
+        <p class="info"><strong>Description:</strong> {{ course.description }}</p>
+        <p class="info"><strong>Price:</strong> ${{ course.price }}</p>
+        <p class="info"><strong>Created:</strong> {{ course.cr_at|date:"d.m.Y H:i" }}</p>
+
+        <div class="buttons">
+
+            {% if request.user.role == 'admin' or request.user.role == 'manager' %}
+            <a href="{% url 'update_course' course.id %}">
+                <button type="button" class="update-btn">✏️ Update</button>
+            </a>
+            {% endif %}
+
+            {% if request.user.role == 'admin' %}
+            <form action="{% url 'delete_course' course.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit"
+                        class="delete-btn"
+                        onclick="return confirm('Realno udalit ?');">
+                    🗑 Delete
+                </button>
+            </form>
+            {% endif %}
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+    {% if request.user.role == 'admin' or request.user.role == 'manager' %}
+    <div class="add-course">
+        <a href="{% url 'create_course' %}">
+            <button type="button" class="add-btn">➕ Add Course</button>
+        </a>
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
@@ -30,4 +187,4 @@
     </a><br>
     {% endif %}
 </body>
-</html>
+</html> -->
